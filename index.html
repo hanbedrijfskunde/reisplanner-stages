@@ -1,523 +1,517 @@
 <!DOCTYPE html>
 <html lang="nl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
-    <title>Stage & Afstuderen Planner</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-    <style>
-      #map {
-        height: 550px;
-        width: 100%;
-      }
-      .student-card {
-        transition: all 0.3s;
-      }
-      .student-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      }
-    </style>
-  </head>
-  <body class="bg-gray-50">
-    <div class="container mx-auto p-4 max-w-7xl">
-      <header class="bg-white rounded-lg shadow-lg p-6 mb-6">
-        <h1 class="text-3xl font-bold text-gray-800 mb-2">
-          🎓 Stage & Afstuderen Planner
-        </h1>
-        <p class="text-gray-600">
-          Jouw beschikbaarheid: Ma 27 okt (ochtend), Di 28 - Do 30 okt (hele
-          dag) | 📍 Startlocatie: Ravenstein
-        </p>
-        <div class="flex gap-4 mt-3 text-sm">
-          <span class="bg-blue-100 px-3 py-1 rounded">🎓 6 Afstudeerders</span>
-          <span class="bg-purple-100 px-3 py-1 rounded"
-            >📚 7 Praktijkstages</span
-          >
-        </div>
-      </header>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Stage & Afstuderen Planner</title>
+		<script src="https://cdn.tailwindcss.com"></script>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
+		/>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+		<style>
+			#map {
+				height: 550px;
+				width: 100%;
+			}
+			.student-card {
+				transition: all 0.3s;
+			}
+			.student-card:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+			}
+		</style>
+	</head>
+	<body class="bg-gray-50">
+		<div class="container mx-auto p-4 max-w-7xl">
+			<header class="bg-white rounded-lg shadow-lg p-6 mb-6">
+				<h1 class="text-3xl font-bold text-gray-800 mb-2">
+					🎓 Stage & Afstuderen Planner
+				</h1>
+				<p class="text-gray-600">
+					Jouw beschikbaarheid: Ma 27 okt (ochtend), Di 28 - Do 30 okt (hele
+					dag) | 📍 Startlocatie: Ravenstein
+				</p>
+				<div class="flex gap-4 mt-3 text-sm">
+					<span class="bg-blue-100 px-3 py-1 rounded">🎓 6 Afstudeerders</span>
+					<span class="bg-purple-100 px-3 py-1 rounded"
+						>📚 7 Praktijkstages</span
+					>
+				</div>
+			</header>
 
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div class="bg-white rounded-lg shadow-lg p-4">
-          <h2 class="text-xl font-bold mb-4 text-gray-800">
-            📍 Locaties Overzicht
-          </h2>
-          <div
-            id="map"
-            class="rounded-lg"
-          ></div>
-          <div class="mt-4 text-sm text-gray-600 grid grid-cols-2 gap-2">
-            <div><strong>🏠 Start:</strong> Ravenstein</div>
-            <div><strong>Legenda:</strong></div>
-            <div>🔵 Afstudeerder - Match</div>
-            <div>🟣 Praktijkstage</div>
-            <div>🟡 Te bespreken</div>
-            <div>🔴 Datum conflict</div>
-          </div>
-        </div>
+			<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+				<div class="bg-white rounded-lg shadow-lg p-4">
+					<h2 class="text-xl font-bold mb-4 text-gray-800">
+						📍 Locaties Overzicht
+					</h2>
+					<div id="map" class="rounded-lg"></div>
+					<div class="mt-4 text-sm text-gray-600 grid grid-cols-2 gap-2">
+						<div><strong>🏠 Start:</strong> Ravenstein</div>
+						<div><strong>Legenda:</strong></div>
+						<div>🔵 Afstudeerder - Match</div>
+						<div>🟣 Praktijkstage</div>
+						<div>🟡 Te bespreken</div>
+						<div>🔴 Datum conflict</div>
+					</div>
+				</div>
 
-        <div>
-          <div class="bg-white rounded-lg shadow-lg p-4 mb-4">
-            <h2 class="text-xl font-bold mb-2 text-gray-800">
-              ⭐ Optimale Planning
-            </h2>
-            <div
-              class="bg-green-50 border-2 border-green-300 rounded-lg p-3 mb-4"
-            >
-              <p class="text-sm font-semibold text-green-800">
-                ✅ Alle 13 studenten ingepland!
-              </p>
-              <p class="text-xs text-green-700 mt-1">
-                🚗 11 fysiek | 💻 2 online | ⏱️ 1u15 per student | 🚙
-                Realistische reistijden
-              </p>
-            </div>
-            <div id="suggestions"></div>
-          </div>
+				<div>
+					<div class="bg-white rounded-lg shadow-lg p-4 mb-4">
+						<h2 class="text-xl font-bold mb-2 text-gray-800">
+							⭐ Optimale Planning
+						</h2>
+						<div
+							class="bg-green-50 border-2 border-green-300 rounded-lg p-3 mb-4"
+						>
+							<p class="text-sm font-semibold text-green-800">
+								✅ Alle 13 studenten ingepland!
+							</p>
+							<p class="text-xs text-green-700 mt-1">
+								🚗 11 fysiek | 💻 2 online | ⏱️ 1u15 per student | 🚙
+								Realistische reistijden
+							</p>
+						</div>
+						<div id="suggestions"></div>
+					</div>
 
-          <div class="bg-white rounded-lg shadow-lg p-4">
-            <h2 class="text-xl font-bold mb-4 text-gray-800">
-              👥 Alle Studenten
-            </h2>
-            <div class="flex gap-2 mb-3">
-              <button
-                onclick="filterStudents('all')"
-                class="filter-btn px-3 py-1 rounded text-sm bg-gray-200"
-                id="btn-all"
-              >
-                Alle (13)
-              </button>
-              <button
-                onclick="filterStudents('afstuderen')"
-                class="filter-btn px-3 py-1 rounded text-sm"
-                id="btn-afstuderen"
-              >
-                🎓 Afstuderen (6)
-              </button>
-              <button
-                onclick="filterStudents('praktijk')"
-                class="filter-btn px-3 py-1 rounded text-sm"
-                id="btn-praktijk"
-              >
-                📚 Praktijk (7)
-              </button>
-            </div>
-            <div id="students"></div>
-          </div>
-        </div>
-      </div>
-    </div>
+					<div class="bg-white rounded-lg shadow-lg p-4">
+						<h2 class="text-xl font-bold mb-4 text-gray-800">
+							👥 Alle Studenten
+						</h2>
+						<div class="flex gap-2 mb-3">
+							<button
+								onclick="filterStudents('all')"
+								class="filter-btn px-3 py-1 rounded text-sm bg-gray-200"
+								id="btn-all"
+							>
+								Alle (13)
+							</button>
+							<button
+								onclick="filterStudents('afstuderen')"
+								class="filter-btn px-3 py-1 rounded text-sm"
+								id="btn-afstuderen"
+							>
+								🎓 Afstuderen (6)
+							</button>
+							<button
+								onclick="filterStudents('praktijk')"
+								class="filter-btn px-3 py-1 rounded text-sm"
+								id="btn-praktijk"
+							>
+								📚 Praktijk (7)
+							</button>
+						</div>
+						<div id="students"></div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-    <script>
-      let currentFilter = "all";
-      let markers = [];
+		<script>
+			let currentFilter = "all";
+			let markers = [];
 
-      const studenten = [
-        // Afstudeerders
-        {
-          naam: "Ries",
-          plaats: "Groenlo/Doetinchem",
-          type: "afstuderen",
-          voorkeur: "fysiek",
-          coords: [52.0425, 6.6142],
-          status: "match",
-          datum: "Wo 29 okt 11:00-12:00",
-          opmerking: "Exact volgens voorkeur! (1u)",
-          online: false,
-        },
-        {
-          naam: "Quentin",
-          plaats: "Ochten",
-          type: "afstuderen",
-          voorkeur: "op locatie",
-          coords: [51.9142, 5.5731],
-          status: "match",
-          datum: "Do 30 okt 10:00-11:15",
-          opmerking: "Start om 10u (1u15)",
-          online: false,
-        },
-        {
-          naam: "Muhamed",
-          plaats: "Wijchen",
-          type: "afstuderen",
-          voorkeur: "op kantoor",
-          coords: [51.8078, 5.7242],
-          status: "match",
-          datum: "Ma 27 okt 09:00-10:15",
-          opmerking: "Ma/Di voorkeur - perfect! (1u15)",
-          online: false,
-        },
-        {
-          naam: "Rens V",
-          plaats: "Oosterhout",
-          type: "afstuderen",
-          voorkeur: "geen voorkeur",
-          coords: [51.879623, 5.825494],
-          status: "match",
-          datum: "Do 30 okt 15:25-16:40",
-          opmerking: "Online (1u15)",
-          online: true,
-        },
-        {
-          naam: "Nick",
-          plaats: "Oostrum",
-          type: "afstuderen",
-          voorkeur: "op locatie",
-          coords: [51.5781, 6.0453],
-          status: "match",
-          datum: "Do 30 okt 12:15-13:30",
-          opmerking: "Na Ochten, 1u reistijd (1u15)",
-          online: false,
-        },
-        {
-          naam: "Rens D",
-          plaats: "Oss",
-          type: "afstuderen",
-          voorkeur: "geen voorkeur",
-          coords: [51.765, 5.5181],
-          status: "match",
-          datum: "Do 30 okt 14:10-15:25",
-          opmerking: "Online (1u15)",
-          online: true,
-        },
+			const studenten = [
+				// Afstudeerders
+				{
+					naam: "Ries",
+					plaats: "Groenlo/Doetinchem",
+					type: "afstuderen",
+					voorkeur: "fysiek",
+					coords: [52.0425, 6.6142],
+					status: "match",
+					datum: "Wo 29 okt 11:00-12:00",
+					opmerking: "Exact volgens voorkeur! (1u)",
+					online: false,
+				},
+				{
+					naam: "Quentin",
+					plaats: "Ochten",
+					type: "afstuderen",
+					voorkeur: "op locatie",
+					coords: [51.9142, 5.5731],
+					status: "match",
+					datum: "Do 30 okt 10:00-11:15",
+					opmerking: "Start om 10u (1u15)",
+					online: false,
+				},
+				{
+					naam: "Muhamed",
+					plaats: "Wijchen",
+					type: "afstuderen",
+					voorkeur: "op kantoor",
+					coords: [51.8078, 5.7242],
+					status: "match",
+					datum: "Ma 27 okt 09:00-10:15",
+					opmerking: "Ma/Di voorkeur - perfect! (1u15)",
+					online: false,
+				},
+				{
+					naam: "Rens V",
+					plaats: "Oosterhout",
+					type: "afstuderen",
+					voorkeur: "geen voorkeur",
+					coords: [51.879623, 5.825494],
+					status: "match",
+					datum: "Do 30 okt 15:25-16:40",
+					opmerking: "Online (1u15)",
+					online: true,
+				},
+				{
+					naam: "Nick",
+					plaats: "Oostrum",
+					type: "afstuderen",
+					voorkeur: "op locatie",
+					coords: [51.5781, 6.0453],
+					status: "match",
+					datum: "Do 30 okt 12:15-13:30",
+					opmerking: "Na Ochten, 1u reistijd (1u15)",
+					online: false,
+				},
+				{
+					naam: "Rens D",
+					plaats: "Oss",
+					type: "afstuderen",
+					voorkeur: "geen voorkeur",
+					coords: [51.765, 5.5181],
+					status: "match",
+					datum: "Do 30 okt 14:10-15:25",
+					opmerking: "Online (1u15)",
+					online: true,
+				},
 
-        // Praktijkstages
-        {
-          naam: "Danique",
-          plaats: "Lieshout",
-          type: "praktijk",
-          voorkeur: "n.v.t.",
-          coords: [51.515, 5.595],
-          status: "praktijk",
-          datum: "Di 28 okt 09:00-11:00",
-          opmerking: "De Stater 1 (samen met Lars, 2u!)",
-          online: false,
-        },
-        {
-          naam: "Irma",
-          plaats: "Almelo",
-          type: "praktijk",
-          voorkeur: "n.v.t.",
-          coords: [52.357, 6.663],
-          status: "praktijk",
-          datum: "Wo 29 okt 13:00-14:15",
-          opmerking: "Fysiek! Na Ries, 1u vanaf Groenlo (1u15)",
-          online: false,
-        },
-        {
-          naam: "Lars",
-          plaats: "Lieshout",
-          type: "praktijk",
-          voorkeur: "n.v.t.",
-          coords: [51.515, 5.595],
-          status: "praktijk",
-          datum: "Di 28 okt 09:00-11:00",
-          opmerking: "De Stater 1 (samen met Danique, 2u!)",
-          online: false,
-        },
-        {
-          naam: "Marcos",
-          plaats: "Boxmeer",
-          type: "praktijk",
-          voorkeur: "n.v.t.",
-          coords: [51.746, 5.947],
-          status: "praktijk",
-          datum: "Di 28 okt 15:00-16:15",
-          opmerking: "Handelstraat 3, 20 min na Michiel (1u15)",
-          online: false,
-        },
-        {
-          naam: "Michiel",
-          plaats: "Boxmeer",
-          type: "praktijk",
-          voorkeur: "n.v.t.",
-          coords: [51.746, 5.947],
-          status: "praktijk",
-          datum: "Di 28 okt 13:25-14:40",
-          opmerking: "Raamstraat 3, 40 min na Uden (1u15)",
-          online: false,
-        },
-        {
-          naam: "Nouk",
-          plaats: "Cuijk",
-          type: "praktijk",
-          voorkeur: "n.v.t.",
-          coords: [51.729, 5.878],
-          status: "praktijk",
-          datum: "Ma 27 okt 10:45-12:00",
-          opmerking: "Lange Linden 22, 30 min na Wijchen (1u15)",
-          online: false,
-        },
-        {
-          naam: "Tijn",
-          plaats: "Uden",
-          type: "praktijk",
-          voorkeur: "n.v.t.",
-          coords: [51.661, 5.619],
-          status: "praktijk",
-          datum: "Di 28 okt 11:30-12:45",
-          opmerking: "Industrielaan 24, 30 min na Lieshout (1u15)",
-          online: false,
-        },
-      ];
+				// Praktijkstages
+				{
+					naam: "Danique",
+					plaats: "Lieshout",
+					type: "praktijk",
+					voorkeur: "n.v.t.",
+					coords: [51.515, 5.595],
+					status: "praktijk",
+					datum: "Di 28 okt 09:00-11:00",
+					opmerking: "De Stater 1 (samen met Lars, 2u!)",
+					online: false,
+				},
+				{
+					naam: "Irma",
+					plaats: "Almelo",
+					type: "praktijk",
+					voorkeur: "n.v.t.",
+					coords: [52.357, 6.663],
+					status: "praktijk",
+					datum: "Wo 29 okt 13:00-14:15",
+					opmerking: "Fysiek! Na Ries, 1u vanaf Groenlo (1u15)",
+					online: false,
+				},
+				{
+					naam: "Lars",
+					plaats: "Lieshout",
+					type: "praktijk",
+					voorkeur: "n.v.t.",
+					coords: [51.515, 5.595],
+					status: "praktijk",
+					datum: "Di 28 okt 09:00-11:00",
+					opmerking: "De Stater 1 (samen met Danique, 2u!)",
+					online: false,
+				},
+				{
+					naam: "Marcos",
+					plaats: "Boxmeer",
+					type: "praktijk",
+					voorkeur: "n.v.t.",
+					coords: [51.746, 5.947],
+					status: "praktijk",
+					datum: "Di 28 okt 15:00-16:15",
+					opmerking: "Handelstraat 3, 20 min na Michiel (1u15)",
+					online: false,
+				},
+				{
+					naam: "Michiel",
+					plaats: "Boxmeer",
+					type: "praktijk",
+					voorkeur: "n.v.t.",
+					coords: [51.746, 5.947],
+					status: "praktijk",
+					datum: "Di 28 okt 13:25-14:40",
+					opmerking: "Raamstraat 3, 40 min na Uden (1u15)",
+					online: false,
+				},
+				{
+					naam: "Nouk",
+					plaats: "Cuijk",
+					type: "praktijk",
+					voorkeur: "n.v.t.",
+					coords: [51.729, 5.878],
+					status: "praktijk",
+					datum: "Ma 27 okt 10:45-12:00",
+					opmerking: "Lange Linden 22, 30 min na Wijchen (1u15)",
+					online: false,
+				},
+				{
+					naam: "Tijn",
+					plaats: "Uden",
+					type: "praktijk",
+					voorkeur: "n.v.t.",
+					coords: [51.661, 5.619],
+					status: "praktijk",
+					datum: "Di 28 okt 11:30-12:45",
+					opmerking: "Industrielaan 24, 30 min na Lieshout (1u15)",
+					online: false,
+				},
+			];
 
-      // Functie om jittering toe te voegen aan overlappende markers
-      function applyJitter(studenten) {
-        const jitterAmount = 0.003;
-        const locationCount = {};
+			// Functie om jittering toe te voegen aan overlappende markers
+			function applyJitter(studenten) {
+				const jitterAmount = 0.003;
+				const locationCount = {};
 
-        studenten.forEach((s) => {
-          const key = `${s.coords[0]},${s.coords[1]}`;
-          locationCount[key] = (locationCount[key] || 0) + 1;
-        });
+				studenten.forEach((s) => {
+					const key = `${s.coords[0]},${s.coords[1]}`;
+					locationCount[key] = (locationCount[key] || 0) + 1;
+				});
 
-        const locationIndex = {};
+				const locationIndex = {};
 
-        return studenten.map((s) => {
-          const key = `${s.coords[0]},${s.coords[1]}`;
+				return studenten.map((s) => {
+					const key = `${s.coords[0]},${s.coords[1]}`;
 
-          if (locationCount[key] > 1) {
-            locationIndex[key] = (locationIndex[key] || 0) + 1;
-            const angle =
-              (locationIndex[key] / locationCount[key]) * Math.PI * 2;
-            const radius = jitterAmount;
+					if (locationCount[key] > 1) {
+						locationIndex[key] = (locationIndex[key] || 0) + 1;
+						const angle =
+							(locationIndex[key] / locationCount[key]) * Math.PI * 2;
+						const radius = jitterAmount;
 
-            return {
-              ...s,
-              coords: [
-                s.coords[0] + Math.cos(angle) * radius,
-                s.coords[1] + Math.sin(angle) * radius,
-              ],
-            };
-          }
+						return {
+							...s,
+							coords: [
+								s.coords[0] + Math.cos(angle) * radius,
+								s.coords[1] + Math.sin(angle) * radius,
+							],
+						};
+					}
 
-          return s;
-        });
-      }
+					return s;
+				});
+			}
 
-      const studentenMetJitter = applyJitter(studenten);
+			const studentenMetJitter = applyJitter(studenten);
 
-      const map = L.map("map").setView([51.7953, 5.6442], 8);
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© OpenStreetMap",
-      }).addTo(map);
+			const map = L.map("map").setView([51.7953, 5.6442], 8);
+			L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+				attribution: "© OpenStreetMap",
+			}).addTo(map);
 
-      const homeMarker = L.marker([51.7953, 5.6442], {
-        icon: L.divIcon({
-          html: "<div style='background:#10b981;width:30px;height:30px;border-radius:50%;border:3px solid white;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 6px rgba(0,0,0,0.3)'>🏠</div>",
-          iconSize: [30, 30],
-          iconAnchor: [15, 15],
-        }),
-      })
-        .addTo(map)
-        .bindPopup("<b>Jouw locatie</b><br>Ravenstein");
+			const homeMarker = L.marker([51.7953, 5.6442], {
+				icon: L.divIcon({
+					html: "<div style='background:#10b981;width:30px;height:30px;border-radius:50%;border:3px solid white;display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 6px rgba(0,0,0,0.3)'>🏠</div>",
+					iconSize: [30, 30],
+					iconAnchor: [15, 15],
+				}),
+			})
+				.addTo(map)
+				.bindPopup("<b>Jouw locatie</b><br>Ravenstein");
 
-      markers.push(homeMarker);
+			markers.push(homeMarker);
 
-      studentenMetJitter.forEach((s) => {
-        const colors = {
-          match: "#3b82f6",
-          bespreken: "#f59e0b",
-          conflict: "#ef4444",
-          praktijk: "#9333ea",
-        };
-        const color = colors[s.status];
+			studentenMetJitter.forEach((s) => {
+				const colors = {
+					match: "#3b82f6",
+					bespreken: "#f59e0b",
+					conflict: "#ef4444",
+					praktijk: "#9333ea",
+				};
+				const color = colors[s.status];
 
-        const dist = Math.round(
-          Math.sqrt(
-            Math.pow((s.coords[0] - 51.7953) * 111, 2) +
-              Math.pow((s.coords[1] - 5.6442) * 85, 2)
-          )
-        );
-        const tijd = Math.round((dist / 70) * 60);
+				const dist = Math.round(
+					Math.sqrt(
+						Math.pow((s.coords[0] - 51.7953) * 111, 2) +
+							Math.pow((s.coords[1] - 5.6442) * 85, 2)
+					)
+				);
+				const tijd = Math.round((dist / 70) * 60);
 
-        const icon = s.type === "praktijk" ? "📚" : "🎓";
+				const icon = s.type === "praktijk" ? "📚" : "🎓";
 
-        const marker = L.marker(s.coords, {
-          icon: L.divIcon({
-            html: `<div style='background:${color};width:28px;height:28px;border-radius:50%;border:2px solid white;box-shadow:0 2px 4px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;font-size:14px'>${icon}</div>`,
-            iconSize: [28, 28],
-            iconAnchor: [14, 14],
-          }),
-        })
-          .addTo(map)
-          .bindPopup(
-            `<b>${s.naam}</b> <em>(${
-              s.type === "praktijk" ? "Praktijk" : "Afstuderen"
-            })</em><br>${s.plaats}<br><em>~${dist} km (${tijd} min)</em><br>${
-              s.opmerking
-            }`
-          );
+				const marker = L.marker(s.coords, {
+					icon: L.divIcon({
+						html: `<div style='background:${color};width:28px;height:28px;border-radius:50%;border:2px solid white;box-shadow:0 2px 4px rgba(0,0,0,0.3);display:flex;align-items:center;justify-content:center;font-size:14px'>${icon}</div>`,
+						iconSize: [28, 28],
+						iconAnchor: [14, 14],
+					}),
+				})
+					.addTo(map)
+					.bindPopup(
+						`<b>${s.naam}</b> <em>(${
+							s.type === "praktijk" ? "Praktijk" : "Afstuderen"
+						})</em><br>${s.plaats}<br><em>~${dist} km (${tijd} min)</em><br>${
+							s.opmerking
+						}`
+					);
 
-        markers.push(marker);
-      });
+				markers.push(marker);
+			});
 
-      setTimeout(() => {
-        const group = L.featureGroup(markers);
-        map.fitBounds(group.getBounds().pad(0.1));
-      }, 100);
+			setTimeout(() => {
+				const group = L.featureGroup(markers);
+				map.fitBounds(group.getBounds().pad(0.1));
+			}, 100);
 
-      const suggestions = [
-        {
-          dag: "Ma 27 okt (ochtend)",
-          studenten: [
-            "🎓 Muhamed (Wijchen - 09:00-10:15)",
-            "🚗 Reistijd 30 min",
-            "📚 Nouk (Cuijk - 10:45-12:00)",
-          ],
-          kleur: "bg-gradient-to-r from-purple-600 to-blue-600",
-          beschrijving:
-            "Optimale ochtend! Wijchen (15 min heen) → Cuijk (30 min). Klaar om 12:00",
-          tijd: "⏱️ 2u30 gesprekken + 55 min rijden = 3u25 totaal",
-        },
-        {
-          dag: "Di 28 oktober (hele dag)",
-          studenten: [
-            "📚 Danique + Lars (Lieshout - 09:00-11:00, 2u!)",
-            "🚗 Reistijd 30 min",
-            "📚 Tijn (Uden - 11:30-12:45)",
-            "🚗 Reistijd 40 min",
-            "📚 Michiel (Boxmeer - 13:25-14:40)",
-            "🚗 Reistijd 20 min (zelfde plaats!)",
-            "📚 Marcos (Boxmeer - 15:00-16:15)",
-          ],
-          kleur: "bg-gradient-to-r from-blue-600 to-cyan-600",
-          beschrijving:
-            "Zuidelijk cluster! Route: Lieshout → Uden → Boxmeer (Michiel + Marcos na elkaar!). Klaar om 16:15",
-          tijd: "⏱️ 5u45 gesprekken + 1u30 rijden = 7u15 totaal",
-        },
-        {
-          dag: "Wo 29 oktober (hele dag)",
-          studenten: [
-            "🚗 09:30 Vertrek (1u30 rijden)",
-            "🎓 Ries (Groenlo - 11:00-12:00, 1u)",
-            "🚗 Reistijd 1u",
-            "📚 Irma (Almelo - 13:00-14:15)",
-            "🚗 14:15-15:55 Terug (1u40)",
-          ],
-          kleur: "bg-gradient-to-r from-indigo-600 to-purple-600",
-          beschrijving:
-            "Oostelijke route! Exact volgens Ries voorkeur 11:00-12:00. Terug om 15:55",
-          tijd: "⏱️ 2u15 gesprekken + 4u10 rijden = 6u25 totaal",
-        },
-        {
-          dag: "Do 30 oktober (start 10:00)",
-          studenten: [
-            "🎓 Quentin (Ochten - 10:00-11:15)",
-            "🚗 Reistijd 1u",
-            "🎓 Nick (Oostrum - 12:15-13:30)",
-            "🚗 13:30-14:10 Terug (40 min)",
-            "💻 Rens D (Online - 14:10-15:25)",
-            "💻 Rens V (Online - 15:25-16:40)",
-          ],
-          kleur: "bg-gradient-to-r from-cyan-600 to-blue-600",
-          beschrijving:
-            "Start 10:00! Ochtend fysiek: Ochten west → Oostrum zuidoost. Middag: 2 online sessies. Klaar om 16:40",
-          tijd: "⏱️ 4u30 gesprekken + 1u40 rijden = 6u10 totaal",
-        },
-      ];
+			const suggestions = [
+				{
+					dag: "Ma 27 okt (ochtend)",
+					studenten: [
+						"🎓 Muhamed (Wijchen - 09:00-10:15)",
+						"🚗 Reistijd 30 min",
+						"📚 Nouk (Cuijk - 10:45-12:00)",
+					],
+					kleur: "bg-gradient-to-r from-purple-600 to-blue-600",
+					beschrijving:
+						"Optimale ochtend! Wijchen (15 min heen) → Cuijk (30 min). Klaar om 12:00",
+					tijd: "⏱️ 2u30 gesprekken + 55 min rijden = 3u25 totaal",
+				},
+				{
+					dag: "Di 28 oktober (hele dag)",
+					studenten: [
+						"📚 Danique + Lars (Lieshout - 09:00-11:00, 2u!)",
+						"🚗 Reistijd 30 min",
+						"📚 Tijn (Uden - 11:30-12:45)",
+						"🚗 Reistijd 40 min",
+						"📚 Marcos (Boxmeer - 13:25-14:40)",
+						"🚗 Reistijd 20 min (zelfde plaats!)",
+						"📚 Michiel (Boxmeer - 15:00-16:15)",
+					],
+					kleur: "bg-gradient-to-r from-blue-600 to-cyan-600",
+					beschrijving:
+						"Zuidelijk cluster! Route: Lieshout → Uden → Boxmeer (Michiel + Marcos na elkaar!). Klaar om 16:15",
+					tijd: "⏱️ 5u45 gesprekken + 1u30 rijden = 7u15 totaal",
+				},
+				{
+					dag: "Wo 29 oktober (hele dag)",
+					studenten: [
+						"🚗 09:30 Vertrek (1u30 rijden)",
+						"🎓 Ries (Groenlo - 11:00-12:00, 1u)",
+						"🚗 Reistijd 1u",
+						"📚 Irma (Almelo - 13:00-14:15)",
+						"🚗 14:15-15:55 Terug (1u40)",
+					],
+					kleur: "bg-gradient-to-r from-indigo-600 to-purple-600",
+					beschrijving:
+						"Oostelijke route! Exact volgens Ries voorkeur 11:00-12:00. Terug om 15:55",
+					tijd: "⏱️ 2u15 gesprekken + 4u10 rijden = 6u25 totaal",
+				},
+				{
+					dag: "Do 30 oktober (start 10:00)",
+					studenten: [
+						"🎓 Quentin (Ochten - 10:00-11:15)",
+						"🚗 Reistijd 1u",
+						"🎓 Nick (Oostrum - 12:15-13:30)",
+						"🚗 13:30-14:10 Terug (40 min)",
+						"💻 Rens D (Online - 14:10-15:25)",
+						"💻 Rens V (Online - 15:25-16:40)",
+					],
+					kleur: "bg-gradient-to-r from-cyan-600 to-blue-600",
+					beschrijving:
+						"Start 10:00! Ochtend fysiek: Ochten west → Oostrum zuidoost. Middag: 2 online sessies. Klaar om 16:40",
+					tijd: "⏱️ 4u30 gesprekken + 1u40 rijden = 6u10 totaal",
+				},
+			];
 
-      document.getElementById("suggestions").innerHTML = suggestions
-        .map(
-          (s) => `
+			document.getElementById("suggestions").innerHTML = suggestions
+				.map(
+					(s) => `
             <div class="mb-3 p-4 rounded-lg ${s.kleur} text-white shadow-md">
                 <div class="font-bold mb-2 text-lg">${s.dag}</div>
                 <div class="text-sm mb-2 flex flex-wrap gap-1">
                     ${s.studenten
-                      .map(
-                        (st) =>
-                          `<span class="bg-white bg-opacity-20 rounded px-2 py-1 inline-block">${st}</span>`
-                      )
-                      .join("")}
+											.map(
+												(st) =>
+													`<span class="bg-white bg-opacity-20 rounded px-2 py-1 inline-block">${st}</span>`
+											)
+											.join("")}
                 </div>
                 <p class="text-sm mb-1">${s.beschrijving}</p>
                 <p class="text-xs opacity-90">${s.tijd}</p>
             </div>
         `
-        )
-        .join("");
+				)
+				.join("");
 
-      function renderStudents() {
-        const filtered =
-          currentFilter === "all"
-            ? studenten
-            : studenten.filter((s) => s.type === currentFilter);
+			function renderStudents() {
+				const filtered =
+					currentFilter === "all"
+						? studenten
+						: studenten.filter((s) => s.type === currentFilter);
 
-        document.getElementById("students").innerHTML = filtered
-          .map((s) => {
-            const statusColors = {
-              match: "bg-blue-50 border-blue-300",
-              bespreken: "bg-yellow-50 border-yellow-300",
-              conflict: "bg-red-50 border-red-300",
-              praktijk: "bg-purple-50 border-purple-300",
-            };
-            const statusIcons = {
-              match: "✅",
-              bespreken: "📅",
-              conflict: "⚠️",
-              praktijk: "📚",
-            };
-            const typeIcon = s.type === "praktijk" ? "📚" : "🎓";
-            const onlineBadge = s.online
-              ? '<span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">💻 Online</span>'
-              : "";
+				document.getElementById("students").innerHTML = filtered
+					.map((s) => {
+						const statusColors = {
+							match: "bg-blue-50 border-blue-300",
+							bespreken: "bg-yellow-50 border-yellow-300",
+							conflict: "bg-red-50 border-red-300",
+							praktijk: "bg-purple-50 border-purple-300",
+						};
+						const statusIcons = {
+							match: "✅",
+							bespreken: "📅",
+							conflict: "⚠️",
+							praktijk: "📚",
+						};
+						const typeIcon = s.type === "praktijk" ? "📚" : "🎓";
+						const onlineBadge = s.online
+							? '<span class="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">💻 Online</span>'
+							: "";
 
-            return `
+						return `
                     <div class="student-card ${
-                      statusColors[s.status]
-                    } border-2 rounded-lg p-3 mb-2">
+											statusColors[s.status]
+										} border-2 rounded-lg p-3 mb-2">
                         <div class="flex justify-between items-start">
                             <div class="flex-1">
                                 <h3 class="font-bold text-gray-800">${typeIcon} ${
-              s.naam
-            }</h3>
+							s.naam
+						}</h3>
                                 <p class="text-sm text-gray-600">${
-                                  s.plaats
-                                } • ${s.datum}</p>
+																	s.plaats
+																} • ${s.datum}</p>
                                 <p class="text-xs text-gray-500 italic mt-1">${
-                                  s.opmerking
-                                }</p>
+																	s.opmerking
+																}</p>
                             </div>
                             <div class="text-right flex flex-col gap-1">
                                 <span class="text-xs bg-white px-2 py-1 rounded whitespace-nowrap">${
-                                  s.type === "praktijk"
-                                    ? "Praktijk"
-                                    : "Afstuderen"
-                                }</span>
+																	s.type === "praktijk"
+																		? "Praktijk"
+																		: "Afstuderen"
+																}</span>
                                 ${onlineBadge}
                             </div>
                         </div>
                     </div>
                 `;
-          })
-          .join("");
-      }
+					})
+					.join("");
+			}
 
-      function filterStudents(type) {
-        currentFilter = type;
-        document.querySelectorAll(".filter-btn").forEach((btn) => {
-          btn.classList.remove("bg-gray-600", "text-white");
-          btn.classList.add("bg-gray-200");
-        });
-        document
-          .getElementById(`btn-${type}`)
-          .classList.add("bg-gray-600", "text-white");
-        document.getElementById(`btn-${type}`).classList.remove("bg-gray-200");
-        renderStudents();
-      }
+			function filterStudents(type) {
+				currentFilter = type;
+				document.querySelectorAll(".filter-btn").forEach((btn) => {
+					btn.classList.remove("bg-gray-600", "text-white");
+					btn.classList.add("bg-gray-200");
+				});
+				document
+					.getElementById(`btn-${type}`)
+					.classList.add("bg-gray-600", "text-white");
+				document.getElementById(`btn-${type}`).classList.remove("bg-gray-200");
+				renderStudents();
+			}
 
-      renderStudents();
-      document
-        .getElementById("btn-all")
-        .classList.add("bg-gray-600", "text-white");
-    </script>
-  </body>
+			renderStudents();
+			document
+				.getElementById("btn-all")
+				.classList.add("bg-gray-600", "text-white");
+		</script>
+	</body>
 </html>
