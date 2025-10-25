@@ -142,11 +142,11 @@
 					naam: "Muhamed",
 					plaats: "Wijchen",
 					type: "afstuderen",
-					voorkeur: "op kantoor",
+					voorkeur: "op locatie",
 					coords: [51.8078, 5.7242],
 					status: "match",
-					datum: "Ma 27 okt 09:00-10:15",
-					opmerking: "Ma/Di voorkeur - perfect! (1u15)",
+					datum: "Di 4 nov 10:00-11:15",
+					opmerking: "Di voorkeur (1u15)",
 					online: false,
 				},
 				{
@@ -191,8 +191,8 @@
 					voorkeur: "n.v.t.",
 					coords: [51.515, 5.595],
 					status: "praktijk",
-					datum: "Di 28 okt 09:00-11:00",
-					opmerking: "De Stater 1 (samen met Lars, 2u!)",
+					datum: "Di 28 okt 09:30-11:00",
+					opmerking: "De Stater 1 (samen met Lars, 1u30)",
 					online: false,
 				},
 				{
@@ -213,8 +213,8 @@
 					voorkeur: "n.v.t.",
 					coords: [51.515, 5.595],
 					status: "praktijk",
-					datum: "Di 28 okt 09:00-11:00",
-					opmerking: "De Stater 1 (samen met Danique, 2u!)",
+					datum: "Di 28 okt 09:30-11:00",
+					opmerking: "De Stater 1 (samen met Danique, 1u30)",
 					online: false,
 				},
 				{
@@ -363,19 +363,17 @@
 				{
 					dag: "Ma 27 okt (ochtend)",
 					studenten: [
-						"🎓 Muhamed (Wijchen - 09:00-10:15)",
-						"🚗 Reistijd 30 min",
 						"📚 Nouk (Cuijk - 10:45-12:00)",
 					],
 					kleur: "bg-gradient-to-r from-purple-600 to-blue-600",
 					beschrijving:
-						"Optimale ochtend! Wijchen (15 min heen) → Cuijk (30 min). Klaar om 12:00",
-					tijd: "⏱️ 2u30 gesprekken + 55 min rijden = 3u25 totaal",
+					"Alleen Nouk in Cuijk. Klaar om 12:00",
+					tijd: "⏱️ 1u15 gesprek + 30 min rijden = 1u45 totaal",
 				},
 				{
 					dag: "Di 28 oktober (hele dag)",
 					studenten: [
-						"📚 Danique + Lars (Lieshout - 09:00-11:00, 2u!)",
+						"📚 Danique + Lars (Lieshout - 09:30-11:00, 1u30)",
 						"🚗 Reistijd 30 min",
 						"📚 Tijn (Uden - 11:30-12:45)",
 						"🚗 Reistijd 40 min",
@@ -386,7 +384,7 @@
 					kleur: "bg-gradient-to-r from-blue-600 to-cyan-600",
 					beschrijving:
 						"Zuidelijk cluster! Route: Lieshout → Uden → Boxmeer (Marcos + Michiel na elkaar!). Klaar om 16:15",
-					tijd: "⏱️ 5u45 gesprekken + 1u30 rijden = 7u15 totaal",
+					tijd: "⏱️ 5u15 gesprekken + 1u30 rijden = 6u45 totaal",
 				},
 				{
 					dag: "Wo 29 oktober (hele dag)",
@@ -423,6 +421,13 @@
 					beschrijving: "Extra dag voor Nick in Oostrum. Op locatie afspraak.",
 					tijd: "⏱️ 1u15 gesprek",
 				},
+			{
+				dag: "Di 4 november (ochtend)",
+				studenten: ["🎓 Muhamed (Wijchen - 10:00-11:15)"],
+				kleur: "bg-gradient-to-r from-blue-600 to-indigo-600",
+				beschrijving: "Muhamed in Wijchen. Op locatie afspraak.",
+				tijd: "⏱️ 1u15 gesprek + 30 min rijden = 1u45 totaal",
+			},
 			];
 
 			document.getElementById("suggestions").innerHTML = suggestions
